@@ -1,0 +1,88 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>Covid Craziness in Oklahoma</title>
+        <meta name="description" content="A quickie site displaying covid number DoD ">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    </head>
+    <body>
+        <h1>Covid craziness</h1>
+		<!--
+		Carlos: June 29, 842
+		Goran: July 7, 905
+		Kaity: July 10, 600
+		Mary: July 12, 745
+		-->
+		<p>Highest DoD number: <span id="highestVal"></span></p>
+		<p>Date of highest DoD number: <span id="dateOfHighest"></span></p>
+
+        <table>
+        	<tr><td>Date</td><td>Day over Day increase</td></tr>
+        </table>
+        <script src="js/vendor/modernizr-3.5.0.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+        <script>window.jQuery || document.write('<script src="js/vendor/jquery-3.2.1.min.js"><\/script>')</script>
+        <script src="js/plugins.js"></script>
+        <script src="js/main.js"></script>
+
+        <!-- Google Analytics: change UA-XXXXX-Y to be your site's ID. -->
+        <script>
+            window.ga=function(){ga.q.push(arguments)};ga.q=[];ga.l=+new Date;
+            ga('create','UA-XXXXX-Y','auto');ga('send','pageview')
+        </script>
+        <script src="https://www.google-analytics.com/analytics.js" async defer></script>
+    <script type="text/javascript">
+    	$( document ).ready(function() {
+
+
+    		let increase, dateHtml, dod, bg, theDate
+
+    		const months = ["January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December"];
+    		$.ajax({
+	    		url: 'https://covidtracking.com/api/v1/states/ok/daily.json',
+	    		daa: {format:'json'},
+	    		error: function() {
+	    			$('#message').html('<p>An error has occurred.')
+	    		},
+	    		success: function(data){
+	    			// highest DoD value
+	    			const highestVal = Math.max.apply(Math, data.map(function(o) { return o.positiveIncrease; }))
+	    			$('#highestVal').text(highestVal)
+	    			// date of highest DoD Value
+	    			let dateOfHighest = data.find(function(object) {
+	    				if(object.positiveIncrease === highestVal){ return object };
+    				});
+
+	    			$('#dateOfHighest').text(dateOfHighest.date)
+	    			data.forEach(object => {
+	    				// console.log(object)
+	    				if (object.dateChecked) {
+	    					resultDate = new Date(object.dateChecked)
+		    				resultYear = resultDate.getFullYear()
+		    				resultMonth = months[resultDate.getMonth()]
+		    				resultDay = resultDate.getDate()
+		    				theDate = `${resultMonth} ${resultDay}`
+		    			} else if (object.date) {
+		    				theDate = `${object.date}`
+		    			}
+	    				increase = object.positiveIncrease
+	    				if ((increase >=600) && (increase<= 905)){
+	    					bg = '#e5fdf1'
+	    				}
+	    				style = ` style="background:${bg}" `
+	    				dateHtml = `<td>${theDate}</td>`
+	    				dod  = `<td>${object.positiveIncrease}</td>`
+	    				$( "table" ).append( `<tr ${style}>${dateHtml}${dod}</tr>` );
+    				})
+	    		}
+    		});
+    	});
+    </script>
+
+    </body>
+</html>
