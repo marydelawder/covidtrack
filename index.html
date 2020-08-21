@@ -23,28 +23,15 @@
         <table>
         	<tr><td>Date</td><td>Day over Day increase</td></tr>
         </table>
-        <script src="js/vendor/modernizr-3.5.0.min.js"></script>
         <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-        <script>window.jQuery || document.write('<script src="js/vendor/jquery-3.2.1.min.js"><\/script>')</script>
-        <script src="js/plugins.js"></script>
-        <script src="js/main.js"></script>
-
-        <!-- Google Analytics: change UA-XXXXX-Y to be your site's ID. -->
-        <script>
-            window.ga=function(){ga.q.push(arguments)};ga.q=[];ga.l=+new Date;
-            ga('create','UA-XXXXX-Y','auto');ga('send','pageview')
-        </script>
-        <script src="https://www.google-analytics.com/analytics.js" async defer></script>
     <script type="text/javascript">
     	$( document ).ready(function() {
-
-
     		let increase, dateHtml, dod, bg, theDate
 
     		const months = ["January", "February", "March", "April", "May", "June",
   "July", "August", "September", "October", "November", "December"];
     		$.ajax({
-	    		url: 'https://covidtracking.com/api/v1/states/ok/daily.json',
+	    		url: 'https://api.covidtracking.com/v1/states/ok/daily.json',
 	    		daa: {format:'json'},
 	    		error: function() {
 	    			$('#message').html('<p>An error has occurred.')
